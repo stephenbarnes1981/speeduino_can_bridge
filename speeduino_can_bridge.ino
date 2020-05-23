@@ -20,12 +20,12 @@ char debugBuffer[255];
 #include <SoftwareSerial.h>
 #endif
 
-#define SPEEDUINO_CANID 0x00
+#define SPEEDUINO_CANID 0x5A1
 #define SPEEDUINO_R_COMMAND 0x30
-#define SERIAL_BAUD 9600
+#define SERIAL_BAUD 115200
 #define SPEEDUINO_BAUD 115200
 
-#define MILLIS_BETWEEN_READS 1000
+#define MILLIS_BETWEEN_READS 100
 
 #define DATA_TO_REQUEST 16
 #define COOLANT_OFFSET 7
@@ -34,8 +34,8 @@ char debugBuffer[255];
 #define SW_SERIAL_RX 7
 #define SW_SERIAL_TX 8
 
-#define MCP2515_CS 10
-#define MCP2515_BITRATE CAN_1000KBPS
+#define MCP2515_CS 53
+#define MCP2515_BITRATE CAN_500KBPS
 #define MCP2515_CLOCK MCP_8MHZ
 
 #define LED_TIME 500
@@ -162,7 +162,7 @@ void loop() {
             #ifdef DEBUG
             debugger.println("reading canbus message 0x4B0");
             #endif
-            dataSpeed = word(canMsg4B0.data[5], canMsg4B0.data[4]);
+            dataSpeed = word(canMsg4B0.data[4], canMsg4B0.data[5]);
             currentState = state_writing_canbus;
           }
         } else {
@@ -240,7 +240,7 @@ void stateWritingCanbus() {
   sprintf(debugBuffer, "rpm: %d", dataRpm);
   debugger.println(debugBuffer);
   
-  sprintf(debugBuffer, "speed: %d (%dfmph)", dataSpeed, (int)((dataSpeed * 0.0066)-67));
+  sprintf(debugBuffer, "speed: %d (%dmph)", dataSpeed, (int)((dataSpeed * 0.0066)-66));
   debugger.println(debugBuffer);
   #endif
 
